@@ -1,4 +1,5 @@
-facebook-wrapper
-================
+facebookSDK
+===========
 
-Facebook php sdk v4.0 wrapper
+Facebook API v4.00
+Make a web application with facebook user related information by used facebook PHP SDK V4.0.9 with composer

@@ -1,15 +1,13 @@
 <?php
 /**
- * Created by Md. Mahedi Azad
- * User: facebook wrapper
+ * Created by Md. Mahedi Azads
+ * User: root
  * Date: 6/15/14
  * Time: 8:27 PM
  */
-
-require_once ("vendor/autoload.php");
-
-define("APP_ID", "Your application key");
-define("APP_SECRET", "Your application secrate");
+//require_once 'vendor/autoload.php';
+define("APP_ID", "YOUR_APP_ID");
+define("APP_SECRET", "YOUR_APP_SECRET");
 
 class FacebookBootstrap
 {
@@ -39,6 +37,21 @@ class FacebookBootstrap
         \Facebook\FacebookSession::setDefaultApplication(APP_ID, APP_SECRET);
     }
 
+    /**
+     * login url
+     *
+     * @param $redirectURl after  login to the page will be redirect
+     * @param null $scope
+     * @return string
+     *
+     */
+    public function loginURL($redirectURl, $scope = null)
+    {
+        if ($scope == '') $scope = $this->allScope;
+
+        $helper = new \Facebook\FacebookRedirectLoginHelper($redirectURl);
+        return $helper->getLoginUrl($scope);
+    }
 
     /**
      * Getting token wth Grap Api
@@ -195,21 +208,6 @@ class FacebookBootstrap
         }
     }
 
-    /**
-     * login url
-     *
-     * @param $redirectURl
-     * @param null $scope
-     * @return string
-     *
-     */
-    public function loginURL($redirectURl, $scope = null)
-    {
-        if ($scope == '') $scope = $this->allScope;
-
-        $helper = new \Facebook\FacebookRedirectLoginHelper($redirectURl);
-        return $helper->getLoginUrl($scope);
-    }
 
     /**
      * Get user's friends list information with token
@@ -292,6 +290,18 @@ class FacebookBootstrap
 
         $session = \Facebook\FacebookSession::newAppSession();
 
+//        try {
+//            echo   $session->validate();
+//        } catch (\Facebook\FacebookRequestException $ex) {
+//
+//            echo $ex->getMessage();
+//        } catch (\Exception $ex) {
+//
+//            echo $ex->getMessage();
+//        }
+//
+
+
         try {
             $response = (new \Facebook\FacebookRequest(
                 $session, 'POST', "/me/feed",
@@ -339,6 +349,14 @@ class FacebookBootstrap
                     'place' => $data['place']  //dhaka bangladesh location
                 )
             ))->execute()->getGraphObject()->asArray();
+
+            //Tag friends one by one calling photo tag function
+//            if(isset($data['tags']) & is_file($data['files'])){
+//                $taggFriendsID = explode(',', $data['tags']);
+//                foreach($taggFriendsID as $friend){
+//                    photoTagByToken($data, $response['id'], $friend);
+//                }
+//            }
 
             $response['successMessage'] = 'Post has been successfully executed';
             $response['status'] = true;
@@ -653,6 +671,6 @@ class FacebookBootstrap
     }
 
 
-
-
 }
+
+
